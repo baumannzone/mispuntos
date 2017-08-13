@@ -1,6 +1,9 @@
-# mispuntos
+# Mis Puntos [![CircleCI](https://circleci.com/gh/baumannzone/mispuntos.svg?style=svg)](https://circleci.com/gh/baumannzone/mispuntos)
 
-> A Vue.js project
+> A Vue.js project  
+> Pug + Stylus  
+> Firebase
+
 
 ## Build Setup
 
