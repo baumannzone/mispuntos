@@ -24,6 +24,16 @@ module.exports = {
   },
   // add your custom rules here
   'rules': {
+    "no-underscore-dangle": ["error", { "allowAfterThis": true }],
+    "brace-style": ["error", "stroustrup", { "allowSingleLine": true }],
+    "max-len": ["error", 150],
+    "computed-property-spacing": ["error", "always"],
+    "no-unused-vars": ["error", { "args": "none" }],
+    "no-param-reassign": ["error", { "props": false }],
+    "space-in-parens": ["error", "always"],
+    "array-bracket-spacing": ["error", "always"],
+    "no-plusplus": 0,
+    "no-console": ["error", { allow: ["warn", "error", "debug"] }],
     // don't require .vue extension when importing
     'import/extensions': ['error', 'always', {
       'js': 'never',

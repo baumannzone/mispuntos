@@ -1,23 +1,37 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view></router-view>
+    <img src="./assets/logo.png" width="70">
+
+    <transition name="animt" mode="out-in">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'app',
-};
+  export default {
+    name: 'app',
+  };
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="stylus">
+  #app
+    font-family 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing antialiased;
+    -moz-osx-font-smoothing grayscale;
+    text-align center;
+    color #2c3e50;
+
+
+  .animt-enter-active
+    transition all .2s ease;
+
+  .animt-leave-active
+    transition all .2s ease;
+
+  .animt-enter,
+  .animt-leave-to
+    transform translateY(20px)
+    opacity 0
+
 </style>
