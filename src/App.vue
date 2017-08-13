@@ -1,11 +1,9 @@
-<template>
-  <div id="app">
-    <img src="./assets/logo.png" width="70">
+<template lang="pug">
+  #app
+    img(src='./assets/logo.png' width="70")
 
-    <transition name="animt" mode="out-in">
-      <router-view></router-view>
-    </transition>
-  </div>
+    transition(name='animt', mode='out-in')
+      router-view
 </template>
 
 <script>

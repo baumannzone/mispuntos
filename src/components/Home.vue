@@ -23,33 +23,23 @@
 </template>
 
 <script>
+  import { db } from '../config/index';
+
   export default {
     name: 'Home',
+    mounted() {
+      const usersRef = db.ref( 'users' );
+      console.debug( usersRef );
+      usersRef.on( 'value', ( snapshot ) => {
+        console.debug( 'VAL: ' );
+        console.debug( snapshot.val() );
+        this.tableData = snapshot.val();
+      } );
+    },
     data() {
       return {
         msg: 'Welcome to Your Vue.js App',
-        tableData: [
-          {
-            date: '2016-05-03',
-            name: 'Tom',
-            address: 'No. 189, Grove St, Los Angeles',
-          },
-          {
-            date: '2016-05-02',
-            name: 'Tom',
-            address: 'No. 189, Grove St, Los Angeles',
-          },
-          {
-            date: '2016-05-04',
-            name: 'Tom',
-            address: 'No. 189, Grove St, Los Angeles',
-          },
-          {
-            date: '2016-05-01',
-            name: 'Tom',
-            address: 'No. 189, Grove St, Los Angeles',
-          },
-        ],
+        tableData: null,
       };
     },
   };
