@@ -4,6 +4,9 @@
 > Pug + Stylus  
 > Firebase
 
+[![Main](https://github.com/baumannzone/mispuntos/blob/master/src/assets/main.png)](https://github.com/baumannzone/mispuntos/blob/master/src/assets/main.png)
+
+
 
 ## Build Setup
 
