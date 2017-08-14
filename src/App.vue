@@ -1,6 +1,7 @@
 <template lang="pug">
   #app
-    img(src='./assets/logo.png' width="70")
+    router-link(to="/")
+      img(src='./assets/logo.png' width="70")
 
     transition(name='animt', mode='out-in')
       router-view
