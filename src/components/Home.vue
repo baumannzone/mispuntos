@@ -2,7 +2,7 @@
   .home
     h1 Mi app de puntos
     el-table(:data='tableData', border, style='width: 100%', @cell-click="celda")
-      el-table-column(label='Name', prop="name")
+      el-table-column(label='Nombre', prop="name")
       el-table-column(label='Puntos')
         template(scope="scope")
           .tags

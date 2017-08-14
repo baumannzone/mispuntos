@@ -6,7 +6,9 @@
 
 [![Main](https://github.com/baumannzone/mispuntos/blob/master/src/assets/main.png)](https://github.com/baumannzone/mispuntos/blob/master/src/assets/main.png)
 
-
+## Requirements
+Node `v6.9.5`~  
+(not working with latest node version)*
 
 ## Build Setup
 
