@@ -17,5 +17,4 @@ describe( 'Hello.vue', () => {
     expect( Home.data ).to.be.a( 'function' );
     expect( Home.data().tableData ).to.equal( null );
   } );
-
 } );

@@ -1,6 +1,6 @@
 <template lang="pug">
   .home
-    h1 Mi app de puntos
+    h1 {{ title }}
     el-table(:data='tableData', border, style='width: 100%', @cell-click="celda")
       el-table-column(label='Nombre', prop="name")
       el-table-column(label='Puntos')
@@ -33,13 +33,13 @@
     },
     data() {
       return {
-        msg: 'Welcome to Your Vue.js App',
+        title: 'Mi app de puntos',
         tableData: null,
       };
     },
     methods: {
       celda( row, column, cell, event ) {
-        if ( column.label === 'Name' ) {
+        if ( column.label === 'Nombre' ) {
           console.debug( row, column, cell, event );
           this.$router.push( { name: 'User', params: { id: row.id } } );
         }
