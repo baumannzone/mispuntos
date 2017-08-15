@@ -1,21 +1,36 @@
 <template lang="pug">
   .home
+    router-link(to="/")
+      img(src='../assets/logo.png' width="70")
+
     h1 {{ title }}
-    el-table(:data='tableData', border, style='width: 100%', @cell-click="celda")
+    el-table(:data='tableData', border, style='width: 100%', @cell-click="celda" v-loading="loading")
       el-table-column(label='Nombre', prop="name")
       el-table-column(label='Puntos')
         template(scope="scope")
-          div(v-if="scope.row.likes > scope.row.dislikes")
-            el-tag(type="success") {{ scope.row.likes - scope.row.dislikes }}
-          div(v-if="scope.row.likes == scope.row.dislikes")
-            el-tag(type="gray") 0
-          div(v-if="scope.row.likes < scope.row.dislikes")
-            el-tag(type="danger") {{ scope.row.likes - scope.row.dislikes }}
+          el-tooltip.item(effect="light" placement="right")
+            div(slot="content")
+              span
+                span
+                  i.fa.fa-thumbs-up.fa-lg.green-like.mr-5(aria-hidden='true')
+                span {{ scope.row.likes }}
+
+              span.ml-16
+                span
+                  i.fa.fa-thumbs-up.fa-lg.fa-rotate-180.red-dislike.mr-5(aria-hidden='true')
+                span {{ scope.row.dislikes }}
+
+            div(v-if="scope.row.likes > scope.row.dislikes")
+              el-tag(type="success") {{ scope.row.likes - scope.row.dislikes }}
+            div(v-if="scope.row.likes == scope.row.dislikes")
+              el-tag(type="gray") 0
+            div(v-if="scope.row.likes < scope.row.dislikes")
+              el-tag(type="danger") {{ scope.row.likes - scope.row.dislikes }}
 
       el-table-column(label='Acciones')
         template(scope='scope')
-          el-button(size='small', icon="arrow-up", @click='like(scope.$index, scope.row)')
-          el-button(size='small', icon="arrow-down" type='danger', @click='dislike(scope.$index, scope.row)')
+          el-button(size='small', icon="arrow-up", @click='setLike(scope.$index, scope.row)')
+          el-button(size='small', icon="arrow-down" type='danger', @click='setDislike(scope.$index, scope.row)')
 
 </template>
 
@@ -33,12 +48,14 @@
           .values() // get the values of the result
           .value(); // unwrap array of objects
         console.debug( this.tableData );
+        this.loading = false;
       } );
     },
     data() {
       return {
         title: 'Mi app de puntos',
         tableData: null,
+        loading: true,
       };
     },
     methods: {
@@ -48,7 +65,7 @@
           this.$router.push( { name: 'User', params: { id: row.id } } );
         }
       },
-      like( index, row ) {
+      setLike( index, row ) {
         console.debug( index, row );
         db.ref( `users/${row.id}/likes` ).set( row.likes + 1 )
           .then( ( res ) => {
@@ -59,7 +76,7 @@
             } );
           } );
       },
-      dislike( index, row ) {
+      setDislike( index, row ) {
         console.debug( index, row );
         db.ref( `users/${row.id}/dislikes` ).set( row.dislikes + 1 )
           .then( ( res ) => {
@@ -74,11 +91,17 @@
   };
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
   .mr-5
     margin-right 5px
 
-  a
+  .ml-16
+    margin-left 16px
+
+  .green-like
     color #42b983
+
+  .red-dislike
+    color #FF4949
 
 </style>
