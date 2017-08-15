@@ -30,8 +30,8 @@
         el-table-column(label='Fecha', prop="dateConvert")
         el-table-column(label='Tipo')
           template(scope="scope")
-            i.fa.fa-thumbs-up(aria-hidden='true', v-if="scope.row.type === 'like' ")
-            i.fa.fa-thumbs-up.fa-rotate-180(aria-hidden='true', v-else)
+            i.fa.fa-thumbs-up.green-like(aria-hidden='true', v-if="scope.row.type === 'like' ")
+            i.fa.fa-thumbs-up.fa-rotate-180.red-dislike(aria-hidden='true', v-else)
 
     .file-select
       input(type="file", @change="img($event.target.files)")
@@ -54,10 +54,12 @@
           // Obj to arr
           this.userData.events = Object.keys( events ).map( key => events[ key ] );
           // Format events date
-          this.userData.events = this.userData.events.map( ( item ) => {
-            item.dateConvert = this.$moment( item.date, 'x' ).format( 'DD/MM/YYYY HH:mm' );
-            return item;
-          } );
+          this.userData.events = this.userData.events
+            .map( ( item ) => {
+              item.dateConvert = this.$moment( item.date, 'x' ).format( 'DD/MM/YYYY HH:mm' );
+              return item;
+            } )
+            .reverse();
         }
       } );
     },
@@ -79,7 +81,6 @@
         this.file = files[ 0 ];
       },
       submitUpload() {
-        console.debug( storage );
         const extension = this.file.name.split( '.' ).pop();
         storage.child( `images/users/${this.userData.id}/${this.userData.name}.${extension}` ).put( this.file )
           .then( ( snapshot ) => {
@@ -103,7 +104,7 @@
 
   .profile
     background: $color2; /* fallback for old browsers */
-    background: -webkit-linear-gradient(to bottom, $color1, $color2); /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to bottom, $color1, $color2);
     background: linear-gradient(to bottom, $color1, $color2);
 
   span.float-button
@@ -143,5 +144,11 @@
     margin-left 5px
     font-size 0.8rem
     color #447890
+
+  .green-like
+    color #42b983
+
+  .red-dislike
+    color #FF4949
 
 </style>

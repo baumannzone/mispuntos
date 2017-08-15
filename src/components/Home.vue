@@ -57,9 +57,9 @@
       };
     },
     methods: {
-      celda( row, column, cell, event ) {
+      celda( row, column ) {
         if ( column.label === 'Nombre' ) {
-          console.debug( row, column, cell, event );
+          console.debug( row, column );
           this.$router.push( { name: 'User', params: { id: row.id } } );
         }
       },
@@ -69,24 +69,25 @@
         db.ref( `users/${row.id}/likes` ).set( likes )
           .then( ( res ) => {
             console.debug( res );
-            db.ref( `users/${row.id}` ).child( 'events' ).push( event )
-              .then( ( ev ) => {
-                console.debug( ev );
-                this.$message( {
-                  message: 'Punto añadido.',
-                  type: 'success',
-                } );
-              } );
+            this.logEvent( row.id, event );
           } );
       },
       setDislike( index, row ) {
-        console.debug( index, row );
-        db.ref( `users/${row.id}/dislikes` ).set( row.dislikes + 1 )
+        const dislikes = row.dislikes + 1;
+        const event = { type: 'dislike', date: this.$moment().format( 'x' ) };
+        db.ref( `users/${row.id}/dislikes` ).set( dislikes )
           .then( ( res ) => {
             console.debug( res );
+            this.logEvent( row.id, event );
+          } );
+      },
+      logEvent( id, event ) {
+        db.ref( `users/${id}` ).child( 'events' ).push( event )
+          .then( ( ev ) => {
+            console.debug( ev );
             this.$message( {
               message: 'Punto añadido.',
-              type: 'info',
+              type: 'success',
             } );
           } );
       },
