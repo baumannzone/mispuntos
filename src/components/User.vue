@@ -1,21 +1,19 @@
 <template lang="pug">
+
   .user000(v-loading="false")
     .profile
       .img
-        img(src="userData.imgURL" v-if="userData.imgURL")
-        i.fa.fa-circle(v-else)
-        el-upload.upload-demo(action='#', :auto-upload="false",
-          :on-preview='handlePreview',
-          :on-remove='handleRemove',
-          list-type="picture",
-          :file-list='fileList')
-          el-button(size='small', type='primary') Click to upload
-          .el-upload__tip(slot='tip') jpg/png files with a size less than 500kb
+        //img(src="userData.imgURL", v-if="userData.imgURL")
+        //i.fa.fa-circle(v-else)
+
+    input(type="file", @change="img($event.target.files)")
+    pre File: {{ file }}
+    el-button(@click="submitUpload") Subir
 
 
-    h1 {{ userData.name }}
+    //h1 {{ userData.name }}
 
-    el-row.row-bg(type='flex', justify='center')
+    //el-row.row-bg(type='flex', justify='center')
       el-col(:span='8')
         .block.bg-purple
       el-col(:span='8')
@@ -31,7 +29,7 @@
 </template>
 
 <script>
-  import { db } from '../config/index';
+  import { db, storage } from '../config/index';
 
   export default {
     name: 'User',
@@ -46,21 +44,26 @@
     },
     data() {
       return {
-        fileList: [],
         loading: true,
         userData: {
           name: null,
           likes: null,
           dislikes: null,
         },
+        file: null,
       };
     },
     methods: {
-      handleRemove( file, fileList ) {
-        console.debug( file, fileList );
+      img( files ) {
+        console.debug( files[ 0 ] );
+        this.file = files[ 0 ];
       },
-      handlePreview( file ) {
-        console.debug( file );
+      submitUpload() {
+        storage.child( `images/users/${this.userData.name}` ).put( this.file )
+          .then( ( snapshot ) => {
+            console.debug( 'Uploaded a blob or file!' );
+            console.debug( snapshot );
+          } );
       },
     },
   };
@@ -73,8 +76,6 @@
     background: -webkit-linear-gradient(to bottom, #26D0CE, #1A2980); /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to bottom, #26D0CE, #1A2980);
 
-  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
   .block
     height 50px
 
@@ -85,4 +86,22 @@
   .bg-purple-light {
     background: #e5e9f2
   }
+
+  .file-select > .select-button {
+    padding: 1rem;
+
+    color: white;
+    background-color: #2EA169;
+
+    border-radius: .3rem;
+
+    text-align: center;
+    font-weight: bold;
+  }
+
+  /* Don't forget to hide the original file input! */
+  .file-select > input[type="file"] {
+    display: none;
+  }
+
 </style>
