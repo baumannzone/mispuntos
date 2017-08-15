@@ -5,9 +5,13 @@
       el-table-column(label='Nombre', prop="name")
       el-table-column(label='Puntos')
         template(scope="scope")
-          .tags
-            el-tag.mr-5 {{ scope.row.likes }}
-            el-tag(type="danger") {{ scope.row.dislikes }}
+          div(v-if="scope.row.likes > scope.row.dislikes")
+            el-tag(type="success") {{ scope.row.likes - scope.row.dislikes }}
+          div(v-if="scope.row.likes == scope.row.dislikes")
+            el-tag(type="gray") 0
+          div(v-if="scope.row.likes < scope.row.dislikes")
+            el-tag(type="danger") {{ scope.row.likes - scope.row.dislikes }}
+
       el-table-column(label='Acciones')
         template(scope='scope')
           el-button(size='small', icon="arrow-up", @click='like(scope.$index, scope.row)')
