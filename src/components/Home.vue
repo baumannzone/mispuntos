@@ -4,7 +4,7 @@
       img(src='../assets/logo.png' width="70")
 
     h1 {{ title }}
-    el-table(:data='tableData', border, style='width: 100%', @cell-click="celda" v-loading="loading")
+    el-table(:data='tableData', border, style='width: 100%', @cell-click="celda")
       el-table-column(label='Nombre', prop="name")
       el-table-column(label='Puntos')
         template(scope="scope")
@@ -14,7 +14,6 @@
                 span
                   i.fa.fa-thumbs-up.fa-lg.green-like.mr-5(aria-hidden='true')
                 span {{ scope.row.likes }}
-
               span.ml-16
                 span
                   i.fa.fa-thumbs-up.fa-lg.fa-rotate-180.red-dislike.mr-5(aria-hidden='true')
@@ -55,7 +54,6 @@
       return {
         title: 'Mi app de puntos',
         tableData: null,
-        loading: true,
       };
     },
     methods: {
@@ -66,14 +64,19 @@
         }
       },
       setLike( index, row ) {
-        console.debug( index, row );
-        db.ref( `users/${row.id}/likes` ).set( row.likes + 1 )
+        const likes = row.likes + 1;
+        const event = { type: 'like', date: this.$moment().format( 'x' ) };
+        db.ref( `users/${row.id}/likes` ).set( likes )
           .then( ( res ) => {
             console.debug( res );
-            this.$message( {
-              message: 'Punto añadido.',
-              type: 'success',
-            } );
+            db.ref( `users/${row.id}` ).child( 'events' ).push( event )
+              .then( ( ev ) => {
+                console.debug( ev );
+                this.$message( {
+                  message: 'Punto añadido.',
+                  type: 'success',
+                } );
+              } );
           } );
       },
       setDislike( index, row ) {

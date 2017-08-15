@@ -1,30 +1,41 @@
 <template lang="pug">
 
-  .user000(v-loading="false")
+  .user(v-loading="false")
     .profile
+      span.float-button
+        el-button(type="text")
+          router-link(to="/")
+            i.fa.fa-chevron-left.fa-2x(aria-hidden='true')
       .img
-        //img(src="userData.imgURL", v-if="userData.imgURL")
-        //i.fa.fa-circle(v-else)
+        img(:src="userData.imgURL", v-if="userData.imgURL")
+        img(src="../assets/default-user.png", v-else)
 
-    input(type="file", @change="img($event.target.files)")
-    pre File: {{ file }}
-    el-button(@click="submitUpload") Subir
+      h1 {{ userData.name }}
 
+      el-row.row-bg(type='flex', justify='center')
+        el-col
+          .block
+            span {{ userData.likes }}
+              i.fa.fa-thumbs-up.fa-lg.icon-thumb(aria-hidden='true')
+        el-col
+          .block
+            span.total {{ userData.likes - userData.dislikes }}
+        el-col
+          .block
+            span {{ userData.dislikes }}
+              i.fa.fa-thumbs-up.fa-lg.fa-rotate-180.icon-thumb(aria-hidden='true')
 
-    //h1 {{ userData.name }}
+    .history
+      el-table(:data='userData.events', stripe, style='width: 100%')
+        el-table-column(label='Fecha', prop="dateConvert")
+        el-table-column(label='Tipo')
+          template(scope="scope")
+            i.fa.fa-thumbs-up(aria-hidden='true', v-if="scope.row.type === 'like' ")
+            i.fa.fa-thumbs-up.fa-rotate-180(aria-hidden='true', v-else)
 
-    //el-row.row-bg(type='flex', justify='center')
-      el-col(:span='8')
-        .block.bg-purple
-      el-col(:span='8')
-        .block.bg-purple-light
-      el-col(:span='8')
-        .block.bg-purple
-
-    p {{ userData }}
-
-    //.history
-      el-table
+    .file-select
+      input(type="file", @change="img($event.target.files)")
+      el-button(@click="submitUpload") Subir
 
 </template>
 
@@ -33,22 +44,29 @@
 
   export default {
     name: 'User',
-    mounted() {
+    created() {
       const userRef = db.ref( `users/${this.$route.params.id}` );
       userRef.on( 'value', ( snapshot ) => {
-        // Add Id
         this.userData = snapshot.val();
-        this.loading = false;
-        console.debug( this.userData );
+        this.userData.id = this.$route.params.id;
+        const events = this.userData.events;
+        // Obj to arr
+        this.userData.events = Object.keys( events ).map( key => events[ key ] );
+        // Format date
+        this.userData.events = this.userData.events.map( ( item ) => {
+          item.dateConvert = this.$moment( item.date, 'x' ).format( 'DD/MM/YYYY HH:mm' );
+          return item;
+        } );
       } );
     },
     data() {
       return {
-        loading: true,
+        loadingImage: false,
         userData: {
           name: null,
           likes: null,
           dislikes: null,
+          events: null,
         },
         file: null,
       };
@@ -59,49 +77,68 @@
         this.file = files[ 0 ];
       },
       submitUpload() {
-        storage.child( `images/users/${this.userData.name}` ).put( this.file )
+        console.debug( storage );
+        const extension = this.file.name.split( '.' ).pop();
+        storage.child( `images/users/${this.userData.id}/${this.userData.name}.${extension}` ).put( this.file )
           .then( ( snapshot ) => {
-            console.debug( 'Uploaded a blob or file!' );
-            console.debug( snapshot );
+            this.file = null;
+            const imgURL = snapshot.downloadURL;
+            console.debug( imgURL );
+            this.userData.imgURL = imgURL;
+            db.ref( `users/${this.userData.id}` ).update( { imgURL } )
+              .then( ( res ) => {
+                console.debug( res );
+              } );
           } );
       },
     },
   };
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
+  $color1 = #26D0CE;
+  $color2 = #1f75a4;
 
-  .user
-    background: #1A2980; /* fallback for old browsers */
-    background: -webkit-linear-gradient(to bottom, #26D0CE, #1A2980); /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to bottom, #26D0CE, #1A2980);
+  .profile
+    background: $color2; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to bottom, $color1, $color2); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to bottom, $color1, $color2);
+
+  span.float-button
+    float left
+    position relative
+    left 10px
+    i
+      color white
+
+  .img
+    padding-top 20px
+    img
+      border-radius 50%
+      border 4px solid #4c96cc
+      width 150px
+      height 150px
+
+  h1
+    margin-top 5px
+    margin-bottom 5px
 
   .block
     height 50px
+    line-height 50px
+    background-color rgba(255, 255, 255, .4)
 
-  .bg-purple {
-    background: #d3dce6
-  }
+    span.total
+      font-weight bolder
+      font-size: 2rem
+      color: white;
+      text-shadow: 0 0 19px #ffffff;
 
-  .bg-purple-light {
-    background: #e5e9f2
-  }
-
-  .file-select > .select-button {
-    padding: 1rem;
-
-    color: white;
-    background-color: #2EA169;
-
-    border-radius: .3rem;
-
-    text-align: center;
-    font-weight: bold;
-  }
-
-  /* Don't forget to hide the original file input! */
-  .file-select > input[type="file"] {
-    display: none;
-  }
+  .icon-thumb
+    position: relative
+    top -3px
+    margin-left 5px
+    font-size 0.8rem
+    color #447890
 
 </style>
