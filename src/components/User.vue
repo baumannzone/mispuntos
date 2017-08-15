@@ -49,14 +49,16 @@
       userRef.on( 'value', ( snapshot ) => {
         this.userData = snapshot.val();
         this.userData.id = this.$route.params.id;
-        const events = this.userData.events;
-        // Obj to arr
-        this.userData.events = Object.keys( events ).map( key => events[ key ] );
-        // Format date
-        this.userData.events = this.userData.events.map( ( item ) => {
-          item.dateConvert = this.$moment( item.date, 'x' ).format( 'DD/MM/YYYY HH:mm' );
-          return item;
-        } );
+        if ( this.userData.events ) {
+          const events = this.userData.events;
+          // Obj to arr
+          this.userData.events = Object.keys( events ).map( key => events[ key ] );
+          // Format events date
+          this.userData.events = this.userData.events.map( ( item ) => {
+            item.dateConvert = this.$moment( item.date, 'x' ).format( 'DD/MM/YYYY HH:mm' );
+            return item;
+          } );
+        }
       } );
     },
     data() {
@@ -106,8 +108,9 @@
 
   span.float-button
     float left
-    position relative
-    left 10px
+    position absolute
+    left 20px
+    top 10px
     i
       color white
 
