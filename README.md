@@ -1,6 +1,6 @@
-[![Known Vulnerabilities](https://snyk.io/test/github/baumannzone/mispuntos/badge.svg)](https://snyk.io/test/github/baumannzone/mispuntos)
 [![CircleCI](https://img.shields.io/circleci/project/github/baumannzone/mispuntos.svg)](https://circleci.com/gh/baumannzone/mispuntos)
-[![Website](https://img.shields.io/website/https/mispuntos-c034e.firebaseapp.com.svg?label=website)](https://mispuntos-c034e.firebaseapp.com/#/)
+[![Known Vulnerabilities](https://snyk.io/test/github/baumannzone/mispuntos/badge.svg)](https://snyk.io/test/github/baumannzone/mispuntos)
+
 # Mis Puntos 
 
 > A Vue.js project  
