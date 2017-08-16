@@ -12,17 +12,19 @@
 Node `v6.9.5`~  
 (not working with latest node version)*
 
+
 ## Features
 - Home (Dashboard)
 - User profile page
 - Firebase: Database, Storage, Auth, Deploy
 - Multiple element.io components (@elemefe)
 - Unit and e2e testing
-- Upload image (with firebase storage)
+- Upload image (firebase storage)
+
+[![Feat](https://github.com/baumannzone/mispuntos/blob/master/src/assets/features.png)](https://github.com/baumannzone/mispuntos/blob/master/src/assets/features.png)
 
 
 ## Commands
-
 ``` bash
 # install dependencies
 npm install
@@ -52,4 +54,9 @@ npm run e2e
 npm test
 ```
 
-License: Read LICENSE
+
+## Authors
+* **Jorge Baumann** - [@baumannzone](https://twitter.com/baumannzone) - [Website](http://baumannzone.com)
+
+LICENSE: Read [license](LICENSE)
+
