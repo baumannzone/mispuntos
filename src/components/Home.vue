@@ -1,9 +1,10 @@
 <template lang="pug">
   .home
-    router-link(to="/")
-      img(src='../assets/logo.png' width="70")
+    header
+      router-link(to="/")
+        img(src='../assets/logo.png' width="44")
+      h1 {{ title }}
 
-    h1 {{ title }}
     el-table(:data='tableData', border, style='width: 100%', @cell-click="celda")
       el-table-column(label='Nombre', prop="name")
       el-table-column(label='Puntos')
@@ -19,12 +20,13 @@
                   i.fa.fa-thumbs-up.fa-lg.fa-rotate-180.red-dislike.mr-5(aria-hidden='true')
                 span {{ scope.row.dislikes }}
 
-            div(v-if="scope.row.likes > scope.row.dislikes")
-              el-tag(type="success") {{ scope.row.likes - scope.row.dislikes - scope.row.changes }}
-            div(v-if="scope.row.likes == scope.row.dislikes")
-              el-tag(type="gray") 0
-            div(v-if="scope.row.likes < scope.row.dislikes")
-              el-tag(type="danger") {{ scope.row.likes - scope.row.dislikes }}
+            div.no-select
+              div(v-if="scope.row.totalPoints > 0")
+                el-tag(type="success") {{ scope.row.totalPoints }}
+              div(v-if="scope.row.totalPoints === 0")
+                el-tag(type="gray") 0
+              div(v-if="scope.row.totalPoints < 0")
+                el-tag(type="danger") {{ scope.row.totalPoints }}
 
       el-table-column(label='Acciones' min-width="155")
         template(scope='scope')
@@ -47,13 +49,18 @@
           .mapValues( ( value, id ) => this.$_.merge( {}, value, { id } ) ) // attach id to object
           .values() // get the values of the result
           .value(); // unwrap array of objects
+        this.tableData.map( ( user ) => {
+          console.debug( user );
+          user.totalPoints = user.likes - user.dislikes - user.changes;
+          return user;
+        } );
         console.debug( this.tableData );
         this.loading = false;
       } );
     },
     data() {
       return {
-        title: 'Mi app de puntos',
+        title: 'Mis puntos',
         tableData: null,
       };
     },
@@ -107,6 +114,18 @@
 </script>
 
 <style lang="stylus">
+  header
+    a
+      display inline-block
+    h1
+      position: relative
+      display inline-block
+      top -12px
+      margin-top 0
+      margin-bottom 0
+      margin-left 5px
+      text-transform uppercase
+
   .mr-5
     margin-right 5px
 
@@ -118,5 +137,13 @@
 
   .red-dislike
     color #FF4949
+
+  .no-select
+    -webkit-touch-callout none
+    -webkit-user-select none
+    -khtml-user-select none
+    -moz-user-select none
+    -ms-user-select none
+    user-select none
 
 </style>
