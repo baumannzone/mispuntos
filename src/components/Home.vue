@@ -20,16 +20,17 @@
                 span {{ scope.row.dislikes }}
 
             div(v-if="scope.row.likes > scope.row.dislikes")
-              el-tag(type="success") {{ scope.row.likes - scope.row.dislikes }}
+              el-tag(type="success") {{ scope.row.likes - scope.row.dislikes - scope.row.changes }}
             div(v-if="scope.row.likes == scope.row.dislikes")
               el-tag(type="gray") 0
             div(v-if="scope.row.likes < scope.row.dislikes")
               el-tag(type="danger") {{ scope.row.likes - scope.row.dislikes }}
 
-      el-table-column(label='Acciones')
+      el-table-column(label='Acciones' min-width="155")
         template(scope='scope')
           el-button(size='small', icon="arrow-up", @click='setLike(scope.$index, scope.row)')
           el-button(size='small', icon="arrow-down" type='danger', @click='setDislike(scope.$index, scope.row)')
+          el-button(size='small', icon="star-off" type='info', @click='setChange(scope.$index, scope.row)')
 
 </template>
 
@@ -76,6 +77,16 @@
         const dislikes = row.dislikes + 1;
         const event = { type: 'dislike', date: this.$moment().format( 'x' ) };
         db.ref( `users/${row.id}/dislikes` ).set( dislikes )
+          .then( ( res ) => {
+            console.debug( res );
+            this.logEvent( row.id, event );
+          } );
+      },
+      setChange( index, row ) {
+        // if `changes` not exists changes equal 1
+        const changes = row.changes + 1 || 1;
+        const event = { type: 'change', date: this.$moment().format( 'x' ) };
+        db.ref( `users/${row.id}/changes` ).set( changes )
           .then( ( res ) => {
             console.debug( res );
             this.logEvent( row.id, event );

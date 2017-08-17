@@ -31,7 +31,8 @@
         el-table-column(label='Tipo')
           template(scope="scope")
             i.fa.fa-thumbs-up.green-like(aria-hidden='true', v-if="scope.row.type === 'like' ")
-            i.fa.fa-thumbs-up.fa-rotate-180.red-dislike(aria-hidden='true', v-else)
+            i.fa.fa-thumbs-up.fa-rotate-180.red-dislike(aria-hidden='true', v-if="scope.row.type === 'dislike' ")
+            i.fa.fa-money.fa-lg.blue-change(aria-hidden='true', v-if="scope.row.type === 'change' ")
 
     .file-select
       input(type="file", @change="img($event.target.files)")
@@ -101,6 +102,8 @@
 <style lang="stylus">
   $color1 = #26D0CE;
   $color2 = #1f75a4;
+  $color3 = #447890
+
 
   .profile
     background: $color2; /* fallback for old browsers */
@@ -143,12 +146,15 @@
     top -3px
     margin-left 5px
     font-size 0.8rem
-    color #447890
+    color $color3
 
   .green-like
     color #42b983
 
   .red-dislike
     color #FF4949
+
+  .blue-change
+    color $color3
 
 </style>
