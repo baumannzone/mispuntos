@@ -2,6 +2,10 @@
   #app
     transition(name='animt', mode='out-in')
       router-view
+
+    //footer
+      small: a(href="https://twitter.com/baumannzone") Jorge Baumann
+
 </template>
 
 <script>

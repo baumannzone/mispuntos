@@ -11,6 +11,7 @@
         img(src="../assets/default-user.png", v-else)
 
       h1 {{ userData.name }}
+      span.total(v-if="userData.likes") {{ userData.likes - userData.dislikes - userData.changes }}
 
       el-row.row-bg(type='flex', justify='center')
         el-col
@@ -19,7 +20,8 @@
               i.fa.fa-thumbs-up.fa-lg.icon-thumb(aria-hidden='true')
         el-col
           .block
-            span.total {{ userData.likes - userData.dislikes }}
+            span {{ userData.changes }}
+              i.fa.fa-money.fa-lg.icon-thumb(aria-hidden='true')
         el-col
           .block
             span {{ userData.dislikes }}
@@ -135,11 +137,11 @@
     line-height 50px
     background-color rgba(255, 255, 255, .4)
 
-    span.total
-      font-weight bolder
-      font-size: 2rem
-      color: white;
-      text-shadow: 0 0 19px #ffffff;
+  span.total
+    font-weight bolder
+    font-size: 2rem
+    color: white;
+    text-shadow: 0 0 19px #ffffff;
 
   .icon-thumb
     position: relative
