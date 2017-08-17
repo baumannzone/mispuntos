@@ -19,6 +19,10 @@
                 span
                   i.fa.fa-thumbs-up.fa-lg.fa-rotate-180.red-dislike.mr-5(aria-hidden='true')
                 span {{ scope.row.dislikes }}
+              span.ml-16
+                span
+                  i.fa.fa-money.fa-lg.blue-change.mr-5(aria-hidden='true')
+                span {{ scope.row.changes }}
 
             div.no-select
               div(v-if="scope.row.totalPoints > 0")
@@ -137,6 +141,9 @@
 
   .red-dislike
     color #FF4949
+
+  .blue-change
+    color #447890
 
   .no-select
     -webkit-touch-callout none
