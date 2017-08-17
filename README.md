@@ -57,7 +57,8 @@ npm test
 
 
 ## Authors
-* **Jorge Baumann** - [@baumannzone](https://twitter.com/baumannzone) - [Website](http://baumannzone.com)
+- **Jorge Baumann** - [@baumannzone](https://twitter.com/baumannzone) - [Website](http://baumannzone.com)
+- **Juanito** my awesome little cousin
 
 LICENSE: Read [license](LICENSE)
 
