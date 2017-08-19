@@ -8,7 +8,8 @@
       li.login(v-if="!isLogged", @click="loginVisible = !loginVisible")
         i.fa.fa-user-o.fa-lg(aria-hidden='true')
       li.login(v-if="isLogged", @click="signOut")
-        i.fa.fa-sign-out.fa-lg(aria-hidden='true')
+        el-tooltip.item(effect="dark" content="Desconectar" placement="left")
+          i.fa.fa-sign-out.fa-lg(aria-hidden='true')
 
     template(v-if="loginVisible && !isLogged")
       .form-login(v-loading="loadingPage")
@@ -42,11 +43,11 @@
 
             div.no-select
               div(v-if="scope.row.totalPoints > 0")
-                el-tag(type="success") {{ scope.row.totalPoints }}
+                el-tag.puntos(type="success") {{ scope.row.totalPoints }}
               div(v-if="scope.row.totalPoints === 0")
-                el-tag(type="gray") 0
+                el-tag.puntos(type="gray") 0
               div(v-if="scope.row.totalPoints < 0")
-                el-tag(type="danger") {{ scope.row.totalPoints }}
+                el-tag.puntos(type="danger") {{ scope.row.totalPoints }}
 
       template(v-if="isLogged")
         el-table-column(label='Acciones' min-width="155")
@@ -71,11 +72,9 @@
           .values() // get the values of the result
           .value(); // unwrap array of objects
         this.tableData.map( ( user ) => {
-          console.debug( user );
           user.totalPoints = user.likes - user.dislikes - user.changes;
           return user;
         } );
-        console.debug( this.tableData );
         this.loading = false;
       } );
 
@@ -83,7 +82,6 @@
         if ( user ) {
           this.isLogged = true;
           // User is signed in.
-          console.debug( 'user' );
           console.debug( user );
         }
         else {
@@ -123,10 +121,8 @@
         this.$refs[ formName ].validate( ( valid ) => {
           if ( valid ) {
             this.signIn();
-            console.debug( 'submit!' );
             return true;
           }
-          console.debug( 'error submit!!' );
           return false;
         } );
       },
@@ -221,7 +217,7 @@
   };
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 
   ul.nav-list
     position relative
@@ -233,11 +229,15 @@
     list-style none
     padding 5px
     background-color #00BCD4
+    border-bottom 3px solid #0097A7
     li
       float left
       &.img
         position: relative
         top: 2px
+        & span
+          font-weight bolder
+          margin-left 5px
       & a
         text-decoration none
         color inherit
@@ -262,6 +262,10 @@
     .dialog-footer
       display block
       text-align right
+
+  .puntos
+    font-weight bolder
+    font-size 15px
 
   .mr-5
     margin-right 5px

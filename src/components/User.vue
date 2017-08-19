@@ -7,6 +7,9 @@
           router-link(to="/")
             i.fa.fa-chevron-left.fa-2x(aria-hidden='true')
       .img
+        .loading-eff(v-if="loadingImage")
+          .icon-parent
+            i.el-icon-loading
         img(:src="userData.imgURL", v-if="userData.imgURL")
         img(src="../assets/default-user.png", v-else)
 
@@ -37,8 +40,8 @@
             i.fa.fa-money.fa-lg.blue-change(aria-hidden='true', v-if="scope.row.type === 'change' ")
 
     .file-select
-      input(type="file", @change="img($event.target.files)")
-      el-button(@click="submitUpload") Subir
+      input(type="file", @change="selectImg($event.target.files)")
+      el-button(@click="submitUpload" v-if="file && loadingImage === false") Subir
 
 </template>
 
@@ -79,23 +82,46 @@
       };
     },
     methods: {
-      img( files ) {
+      selectImg( files ) {
         console.debug( files[ 0 ] );
         this.file = files[ 0 ];
       },
       submitUpload() {
-        const extension = this.file.name.split( '.' ).pop();
-        storage.child( `images/users/${this.userData.id}/${this.userData.name}.${extension}` ).put( this.file )
-          .then( ( snapshot ) => {
-            this.file = null;
-            const imgURL = snapshot.downloadURL;
-            console.debug( imgURL );
-            this.userData.imgURL = imgURL;
-            db.ref( `users/${this.userData.id}` ).update( { imgURL } )
-              .then( ( res ) => {
-                console.debug( res );
+        if ( this.file ) {
+          this.loadingImage = true;
+          const extension = this.file.name.split( '.' ).pop();
+          storage.child( `images/users/${this.userData.id}/${this.userData.name}.${extension}` ).put( this.file )
+            .then( ( snapshot ) => {
+              this.file = null;
+              this.loadingImage = false;
+              this.$message( {
+                message: 'Imagen subida correctamente.',
+                type: 'success',
               } );
-          } );
+              const imgURL = snapshot.downloadURL;
+              this.userData.imgURL = imgURL;
+              db.ref( `users/${this.userData.id}` ).update( { imgURL } )
+                .then( ( res ) => {
+                  console.debug( res );
+                } )
+                .catch( ( err ) => {
+                  console.debug( err );
+                  this.$message( {
+                    message: 'Error actualizando la imagen.',
+                    type: 'error',
+                  } );
+                  this.loadingImage = false;
+                } );
+            } )
+            .catch( ( err ) => {
+              console.debug( err );
+              this.$message( {
+                message: 'Error subiendo la imagen.',
+                type: 'error',
+              } );
+              this.loadingImage = false;
+            } );
+        }
       },
     },
   };
@@ -105,7 +131,6 @@
   $color1 = #26D0CE;
   $color2 = #1f75a4;
   $color3 = #447890
-
 
   .profile
     background: $color2; /* fallback for old browsers */
@@ -117,16 +142,33 @@
     position absolute
     left 20px
     top 10px
+    z-index 1
     i
       color white
 
   .img
+    position: relative
     padding-top 20px
-    img
+    img,
+    .loading-eff
       border-radius 50%
       border 4px solid #4c96cc
       width 150px
       height 150px
+
+    .loading-eff
+      position: absolute
+      left 50%
+      transform: translateX(-50%)
+      background-color rgba(0, 0, 0, 0.45)
+      .icon-parent
+        position relative
+        height 100%
+        i
+          color aliceblue
+          font-size 30px
+          top 36%
+          position relative
 
   h1
     margin-top 5px
