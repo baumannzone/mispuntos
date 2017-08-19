@@ -101,7 +101,7 @@
   };
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
   $color1 = #26D0CE;
   $color2 = #1f75a4;
   $color3 = #447890

@@ -13,7 +13,7 @@ const config = {
 const fbApp = firebase.initializeApp( config );
 const db = fbApp.database();
 const auth = fbApp.auth();
-const provider = new firebase.auth.GoogleAuthProvider();
 const storage = fbApp.storage().ref();
+const PROVIDER = new firebase.auth.GoogleAuthProvider();
 
-export { db, provider, auth, storage };
+export { db, auth, storage, PROVIDER };
