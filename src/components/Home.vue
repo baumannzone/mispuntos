@@ -14,12 +14,12 @@
       .form-login(v-loading="loadingPage")
         el-form(:model="logindata", :rules="rules", ref="logindata", label-width="120px")
           el-form-item(label="Email" prop="email" required)
-            el-input(type="email" autoComplete="on" v-model="logindata.email")
+            el-input(type="email" autoComplete="on" v-model="logindata.email", size="small")
           el-form-item(label="Password" prop="pass" required)
-            el-input(type="password" auto-complete="off" v-model="logindata.pass")
+            el-input(type="password" auto-complete="off" v-model="logindata.pass", size="small")
         span.dialog-footer(slot='footer')
-          el-button(@click='dialogFormVisible = false') Cancelar
-          el-button(type='primary', @click="submitForm('logindata')") Entrar
+          el-button(size="mini", @click='loginVisible = false') Cancelar
+          el-button(size="mini", type='primary', @click="submitForm('logindata')") Entrar
 
     el-table(:data='tableData', border, style='width: 100%', @cell-click="celda")
       el-table-column(label='Nombre', prop="name")
@@ -258,8 +258,7 @@
           color #006064
 
   .form-login
-    margin-top 10px
-    margin-bottom 10px
+    margin 10px
     .dialog-footer
       display block
       text-align right
