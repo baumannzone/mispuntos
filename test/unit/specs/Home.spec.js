@@ -1,12 +1,16 @@
 import Vue from 'vue';
 import Home from '@/components/Home';
 
-describe( 'Hello.vue', () => {
-  it( 'Should get the main title correctly', () => {
+describe( 'Home.vue', () => {
+  /* it( 'Should get the main title correctly', () => {
     const Constructor = Vue.extend( Home );
     const vm = new Constructor().$mount();
     expect( vm.$el.querySelector( 'li.img span' ).textContent )
       .to.equal( 'Mis puntos' );
+  } ); */
+
+  it( 'Should get the title correctly', () => {
+    expect( Home.data().title ).to.equal( 'Mis puntos' );
   } );
 
   it( 'Has a mounted() hook', () => {
