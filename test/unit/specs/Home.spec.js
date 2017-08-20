@@ -5,8 +5,8 @@ describe( 'Hello.vue', () => {
   it( 'Should get the main title correctly', () => {
     const Constructor = Vue.extend( Home );
     const vm = new Constructor().$mount();
-    expect( vm.$el.querySelector( 'h1' ).textContent )
-      .to.equal( 'Mi app de puntos' );
+    expect( vm.$el.querySelector( 'li.img span' ).textContent )
+      .to.equal( 'Mis puntos' );
   } );
 
   it( 'Has a mounted() hook', () => {
