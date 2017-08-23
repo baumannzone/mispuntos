@@ -1,4 +1,4 @@
-import Vue from 'vue';
+// import Vue from 'vue';
 import Home from '@/components/Home';
 
 describe( 'Home.vue', () => {
@@ -9,7 +9,7 @@ describe( 'Home.vue', () => {
       .to.equal( 'Mis puntos' );
   } ); */
 
-  it( 'Should get the title correctly', () => {
+  it( 'Should get the title var correctly', () => {
     expect( Home.data().title ).to.equal( 'Mis puntos' );
   } );
 
